@@ -7,10 +7,9 @@ const {
 
 const { readFile } = require("fs/promises");
 
-exports.getAPIInfo = () => {
-  return readFile("./endpoints.json", "utf-8").then((contents) => {
-    return JSON.parse(contents);
-  });
+exports.getAPIInfo = async () => {
+  const contents = await readFile("./endpoints.json", "utf-8");
+  return JSON.parse(contents);
 };
 
 exports.selectCategories = () => {
