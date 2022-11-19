@@ -1,6 +1,6 @@
 ## Hosted app:
 
-https://confused-ox-windbreaker.cyclic.app
+https://embarrassed-calf-lapel.cyclic.app/api
 
 ## Project Summary:
 
