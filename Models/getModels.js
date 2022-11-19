@@ -112,8 +112,7 @@ exports.selectCommentsByReviewId = async (id) => {
   return result.rows;
 };
 
-exports.selectUsers = () => {
-  return db.query(`SELECT * FROM users;`).then((res) => {
-    return res.rows;
-  });
+exports.selectUsers = async () => {
+  const result = await db.query(`SELECT * FROM users;`);
+  return result.rows;
 };
