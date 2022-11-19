@@ -24,51 +24,52 @@ exports.selectCategories = () => {
     });
 };
 
-exports.selectReviews = (categories, sortBy = "created_at", order = "DESC") => {
-  return doesCategoryExist(categories)
-    .then(() => {
-      const sortAllowed = [
-        "owner",
-        "title",
-        "review_id",
-        "category",
-        "review_img_url",
-        "review_body",
-        "created_at",
-        "votes",
-        "designer",
-        "comment_count",
-        "default",
-      ];
-      const orderAllowed = ["ASC", "DESC"];
+exports.selectReviews = async (
+  categories,
+  sortBy = "created_at",
+  order = "DESC",
+) => {
+  await doesCategoryExist(categories);
 
-      const queries = [];
-      let queryString =
-        "SELECT *, COUNT(review_id) AS comment_count FROM reviews ";
+  const sortAllowed = [
+    "owner",
+    "title",
+    "review_id",
+    "category",
+    "review_img_url",
+    "review_body",
+    "created_at",
+    "votes",
+    "designer",
+    "comment_count",
+    "default",
+  ];
+  const orderAllowed = ["ASC", "DESC"];
 
-      if (categories) {
-        queryString += "WHERE category = $1 ";
-        queries.push(categories);
-      }
+  const queries = [];
+  let queryString = "SELECT *, COUNT(review_id) AS comment_count FROM reviews ";
 
-      queryString += "GROUP BY review_id ";
+  if (categories) {
+    queryString += "WHERE category = $1 ";
+    queries.push(categories);
+  }
 
-      if (!sortAllowed.includes(sortBy)) {
-        return Promise.reject({ status: 400, message: "invalid query" });
-      }
-      queryString += `ORDER BY ${sortBy} `;
+  queryString += "GROUP BY review_id ";
 
-      if (!orderAllowed.includes(order)) {
-        return Promise.reject({ status: 400, message: "invalid query" });
-      }
+  if (!sortAllowed.includes(sortBy)) {
+    return Promise.reject({ status: 400, message: "invalid query" });
+  }
+  queryString += `ORDER BY ${sortBy} `;
 
-      queryString += `${order} `;
+  if (!orderAllowed.includes(order)) {
+    return Promise.reject({ status: 400, message: "invalid query" });
+  }
 
-      return db.query(queryString, queries);
-    })
-    .then((results) => {
-      return results.rows;
-    });
+  queryString += `${order} `;
+
+  const results = await db.query(queryString, queries);
+
+  return results.rows;
 };
 exports.selectReviewById = (id) => {
   return db
