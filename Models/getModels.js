@@ -100,19 +100,16 @@ exports.selectReviewById = async (id) => {
   }
 };
 
-exports.selectCommentsByReviewId = (id) => {
-  return doesReviewExist(id)
-    .then(() => {
-      return db.query(
-        `
+exports.selectCommentsByReviewId = async (id) => {
+  await doesReviewExist(id);
+  const result = await db.query(
+    `
       SELECT * FROM comments WHERE review_id = $1;
     `,
-        [id],
-      );
-    })
-    .then((res) => {
-      return res.rows;
-    });
+    [id],
+  );
+
+  return result.rows;
 };
 
 exports.selectUsers = () => {
