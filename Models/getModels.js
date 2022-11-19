@@ -12,16 +12,14 @@ exports.getAPIInfo = async () => {
   return JSON.parse(contents);
 };
 
-exports.selectCategories = () => {
-  return db
-    .query(
-      `
+exports.selectCategories = async () => {
+  const results = await db.query(
+    `
   SELECT * FROM categories;
     `,
-    )
-    .then((results) => {
-      return results.rows;
-    });
+  );
+
+  return results.rows;
 };
 
 exports.selectReviews = async (
@@ -71,6 +69,7 @@ exports.selectReviews = async (
 
   return results.rows;
 };
+
 exports.selectReviewById = (id) => {
   return db
     .query(
