@@ -1,5 +1,5 @@
 const express = require("express");
-
+const cors = require("cors");
 
 const { deleteCommentById } = require("./Controllers/deleteController");
 
@@ -17,6 +17,7 @@ const { patchReviewVotes } = require("./Controllers/patchController");
 const { postCommentToReview } = require("./Controllers/postController");
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 // GET
